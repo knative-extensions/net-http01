@@ -3,7 +3,8 @@
 [![GoDoc](https://godoc.org/knative.dev/net-http01?status.svg)](https://godoc.org/knative.dev/net-http01)
 [![Go Report Card](https://goreportcard.com/badge/knative/net-http01)](https://goreportcard.com/report/knative/net-http01)
 
-Knative `net-http01` implements a simple standalone ACME HTTP01 solver for the Knative Certificate abstraction.
+Knative `net-http01` implements a simple standalone ACME HTTP01 solver for the
+Knative Certificate abstraction.
 
 To learn more about Knative, please visit our
 [Knative docs](https://github.com/knative/docs) repository.
