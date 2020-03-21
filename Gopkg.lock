@@ -94,6 +94,14 @@
   version = "v1.0.1"
 
 [[projects]]
+  digest = "1:45c41cd27a8d986998680bfc86da0bbff5fa4f90d0f446c00636c8b099028ffe"
+  name = "github.com/blang/semver"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "ba2c2ddd89069b46a7011d4106f6868f17ee1705"
+  version = "v3.6.1"
+
+[[projects]]
   digest = "1:8f5acd4d4462b5136af644d25101f0968a7a94ee90fcb2059cec5b7cc42e0b20"
   name = "github.com/census-instrumentation/opencensus-proto"
   packages = [
@@ -261,6 +269,14 @@
   pruneopts = "NUT"
   revision = "14eae340515388ca95aa8e7b86f0de668e981f54"
   version = "v0.5.4"
+
+[[projects]]
+  digest = "1:7c47a990a91ab4922f4009c8ba8dcf35dad08e2b697cf26ea87eaae90e3f7aa1"
+  name = "github.com/imdario/mergo"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "1afb36080aec31e0d1528973ebe6721b191b0369"
+  version = "v0.3.8"
 
 [[projects]]
   digest = "1:1e59759b895f57302df03c5632dc6bbedcdf6782a2b6259246ff653dd214ac45"
@@ -722,9 +738,10 @@
   version = "1.5.0"
 
 [[projects]]
-  digest = "1:061024a203efbf02654d4aa55d69cd10d1f8985dada4cbafe5d6ce1b6914d22a"
+  digest = "1:d77b48cc0ea74f3edbc8e0515a0ce2fa2154eb414137dd4fb5a642a73296d403"
   name = "k8s.io/api"
   packages = [
+    "admission/v1beta1",
     "admissionregistration/v1",
     "admissionregistration/v1beta1",
     "apps/v1",
@@ -780,7 +797,7 @@
   version = "v0.17.4"
 
 [[projects]]
-  digest = "1:8e2b7c4ef17568bbcb7e9dd15f6f60a7ca46c31ea40f9c725c5116dc4e649262"
+  digest = "1:5c34ecf93f44c70f40f7eb45445442ce400affcb1ada78cf3b02d2c4bb652776"
   name = "k8s.io/apimachinery"
   packages = [
     "pkg/api/apitesting/fuzzer",
@@ -821,6 +838,7 @@
     "pkg/util/runtime",
     "pkg/util/sets",
     "pkg/util/strategicpatch",
+    "pkg/util/uuid",
     "pkg/util/validation",
     "pkg/util/validation/field",
     "pkg/util/wait",
@@ -835,7 +853,7 @@
   version = "kubernetes-1.16.4"
 
 [[projects]]
-  digest = "1:e9c6af2fb6b1735601241da72fb0e808c71fa9309a7fe6f5b4235ab8d057c032"
+  digest = "1:364aa5bd7fbb75ef29a472cd7b36ebfa8d288017a3d59bb57bb0fd855adfbc13"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
@@ -1017,8 +1035,14 @@
     "rest",
     "rest/watch",
     "testing",
+    "tools/auth",
     "tools/cache",
+    "tools/clientcmd",
     "tools/clientcmd/api",
+    "tools/clientcmd/api/latest",
+    "tools/clientcmd/api/v1",
+    "tools/leaderelection",
+    "tools/leaderelection/resourcelock",
     "tools/metrics",
     "tools/pager",
     "tools/record",
@@ -1028,6 +1052,7 @@
     "util/cert",
     "util/connrotation",
     "util/flowcontrol",
+    "util/homedir",
     "util/keyutil",
     "util/retry",
     "util/workqueue",
@@ -1159,8 +1184,11 @@
     "injection",
     "injection/clients/dynamicclient",
     "injection/clients/dynamicclient/fake",
+    "injection/clients/namespacedkube/informers/factory",
+    "injection/sharedmain",
     "kmeta",
     "kmp",
+    "leaderelection",
     "logging",
     "logging/logkey",
     "logging/testing",
@@ -1170,9 +1198,13 @@
     "ptr",
     "reconciler",
     "reconciler/testing",
+    "signals",
     "system",
     "system/testing",
     "tracker",
+    "version",
+    "webhook",
+    "webhook/certificates/resources",
   ]
   pruneopts = "T"
   revision = "c13e86e2d4f484f1dd3b8ca6474994c16da74f20"
@@ -1307,11 +1339,13 @@
     "knative.dev/pkg/codegen/cmd/injection-gen",
     "knative.dev/pkg/configmap",
     "knative.dev/pkg/controller",
+    "knative.dev/pkg/injection/sharedmain",
     "knative.dev/pkg/kmeta",
     "knative.dev/pkg/logging",
     "knative.dev/pkg/ptr",
     "knative.dev/pkg/reconciler",
     "knative.dev/pkg/reconciler/testing",
+    "knative.dev/pkg/signals",
     "knative.dev/serving/pkg/apis/networking",
     "knative.dev/serving/pkg/apis/networking/v1alpha1",
     "knative.dev/serving/pkg/client/injection/client/fake",
