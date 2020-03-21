@@ -8,6 +8,8 @@ required = [
   "k8s.io/code-generator/cmd/lister-gen",
   "k8s.io/code-generator/cmd/informer-gen",
   "knative.dev/pkg/codegen/cmd/injection-gen",
+  "knative.dev/serving/test/conformance/certificate/http01",
+  "knative.dev/serving/test", # To support the above
   "knative.dev/test-infra/scripts",
   "knative.dev/test-infra/tools/dep-collector",
 ]
@@ -69,6 +71,12 @@ required = [
   name = "knative.dev/pkg"
   unused-packages = false
   non-go = false
+
+[[prune.project]]
+  name = "knative.dev/serving"
+  unused-packages = false
+  non-go = false
+  go-tests = false
 
 [[prune.project]]
   name = "k8s.io/code-generator"
