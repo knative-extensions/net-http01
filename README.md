@@ -1,11 +1,9 @@
-# Knative Sample Controller
+# Knative `net-http01`
 
-[![GoDoc](https://godoc.org/knative.dev/sample-controller?status.svg)](https://godoc.org/knative.dev/sample-controller)
-[![Go Report Card](https://goreportcard.com/badge/knative/sample-controller)](https://goreportcard.com/report/knative/sample-controller)
+[![GoDoc](https://godoc.org/knative.dev/net-http01?status.svg)](https://godoc.org/knative.dev/net-http01)
+[![Go Report Card](https://goreportcard.com/badge/knative/net-http01)](https://goreportcard.com/report/knative/net-http01)
 
-Knative `sample-controller` defines a few simple resources that are validated by
-webhook and managed by a controller to demonstrate the canonical style in which
-Knative writes controllers.
+Knative `net-http01` implements a simple standalone ACME HTTP01 solver for the Knative Certificate abstraction.
 
 To learn more about Knative, please visit our
 [Knative docs](https://github.com/knative/docs) repository.
