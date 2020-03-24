@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample
+spec:
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+      - name: sample
+        image: ko://knative.dev/net-http01/cmd/sample
+        args:
+        - "-domain=your-domain-name.io"
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
