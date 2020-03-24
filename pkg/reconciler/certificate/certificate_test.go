@@ -301,7 +301,7 @@ func TestReconcileMakingOrders(t *testing.T) {
 					Namespace: "foo",
 				},
 				Data: map[string][]byte{
-					corev1.TLSCertKey: makeCert(t, []string{"example.com"}, time.Now().Add(100*time.Hour)),
+					corev1.TLSCertKey: makeCert(t, []string{"example.com"}, time.Now().Add(100*24*time.Hour)),
 				},
 			},
 		},
@@ -429,7 +429,7 @@ func TestReconcileOrderError(t *testing.T) {
 
 func TestReconcileOrderFulfillment(t *testing.T) {
 
-	tc := makeTLSCert(t, []string{"example.com"}, time.Now().Add(100*time.Hour))
+	tc := makeTLSCert(t, []string{"example.com"}, time.Now().Add(100*24*time.Hour))
 
 	table := TableTest{{
 		Name: "create a new TLS secret",

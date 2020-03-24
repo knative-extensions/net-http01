@@ -67,7 +67,7 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, o *v1alpha1.Certificate)
 		logging.FromContext(ctx).Info("Secret doesn't exist, we must provision a new Certificate.")
 	} else if err != nil {
 		return err
-	} else if valid, err := resources.IsValidCertificate(secret, o.Spec.DNSNames, 48*time.Hour); err == nil && valid {
+	} else if valid, err := resources.IsValidCertificate(secret, o.Spec.DNSNames, 30*24*time.Hour); err == nil && valid {
 		o.Status.MarkReady()
 		o.Status.ObservedGeneration = o.Generation
 		logging.FromContext(ctx).Info("Existing Certificate is valid.")
