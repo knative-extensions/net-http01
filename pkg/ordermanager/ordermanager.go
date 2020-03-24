@@ -65,6 +65,12 @@ var (
 	// Endpoint is the ACME API to use, it defaults to Production, but
 	// can be pointed at Staging or other compatible endpoints.
 	Endpoint = Production
+
+	// UserAgent is the HTTP user agent that is used with the ACME client,
+	// so that traffic from this client may be distinguished from others.
+	// It is intentionally exposed as a mutable variable in case users with
+	// to distinguish their traffic further.
+	UserAgent = "knative.dev/net-http01"
 )
 
 // New creates a new OrderManager.
@@ -73,14 +79,14 @@ func New(ctx context.Context, cb OrderUpCallback, chlr challenger.Interface) (In
 	if err != nil {
 		return nil, err
 	}
-	a := &acme.Account{Contact: []string{}}
+	a := &acme.Account{}
 	client := &acme.Client{
 		DirectoryURL: Endpoint,
-		UserAgent:    "knative.dev/net-http01",
+		UserAgent:    UserAgent,
 		Key:          acctKey,
 	}
-	_, err = client.Register(ctx, a, autocert.AcceptTOS)
-	if err != nil && err != acme.ErrAccountAlreadyExists {
+
+	if _, err := client.Register(ctx, a, autocert.AcceptTOS); err != nil && err != acme.ErrAccountAlreadyExists {
 		return nil, err
 	}
 
@@ -116,12 +122,11 @@ type ticket struct {
 // Order implements Interface
 func (om *impl) Order(ctx context.Context, domains []string, owner interface{}) ([]*apis.URL, *tls.Certificate, error) {
 	logger := logging.FromContext(ctx)
-	t, ok := om.getTicket(domains)
-	if !ok {
+	t, found := om.getTicket(domains)
+	if !found {
 		// If there isn't an in-flight order, then initiate a new order.
 		var err error
-		t, err = om.initiateNewOrder(ctx, domains, owner)
-		if err != nil {
+		if t, err = om.initiateNewOrder(ctx, domains, owner); err != nil {
 			return nil, nil, err
 		}
 		// Fall through to return the challenges
@@ -145,9 +150,6 @@ func (om *impl) Order(ctx context.Context, domains []string, owner interface{}) 
 		logger.Infof("Order is ready for %v", domains)
 		// This removes the ticket, a subsequent Order will start
 		// the process over.
-		// TODO(mattmoor): Consider keeping completed orders around
-		// until they have reached some level of staleness as a
-		// precaution against the low rate limit of let's encrypt.
 		cert, err := om.completeOrder(ctx, domains, t)
 		return nil, cert, err
 
@@ -156,8 +158,7 @@ func (om *impl) Order(ctx context.Context, domains []string, owner interface{}) 
 		urls, err := t.ChallengeURLs(ctx, om.Client)
 		return urls, nil, err
 
-	case acme.StatusDeactivated, acme.StatusExpired, acme.StatusInvalid,
-		acme.StatusRevoked:
+	case acme.StatusDeactivated, acme.StatusExpired, acme.StatusInvalid, acme.StatusRevoked:
 		logger.Infof("Order is invalid for %v", domains)
 		// This is a permanently bad state, we should flush the ticket
 		// and return an error to the client which can retry as it sees
@@ -169,12 +170,12 @@ func (om *impl) Order(ctx context.Context, domains []string, owner interface{}) 
 			return nil, nil, err2
 		} else if err1 != nil {
 			// The error returned by the CA leading to the above state.
-			logging.FromContext(ctx).Errorf("Error from theh CA: %v", err)
+			logging.FromContext(ctx).Errorf("Error from the CA: %v", err)
 			return nil, nil, err1
 		}
 		// Fallback on reporting the status.
 		logging.FromContext(ctx).Errorf("Bad status for order: %s", status)
-		return nil, nil, fmt.Errorf("Order resulted in status: %q", status)
+		return nil, nil, fmt.Errorf("Order resulted in bad status: %q", status)
 
 	default:
 		return nil, nil, fmt.Errorf("Unknown order status: %q", status)
@@ -302,7 +303,7 @@ func (t *ticket) GetStatus(ctx context.Context, client *acme.Client) (string, er
 	return o.Status, nil
 }
 
-func (t *ticket) GetError(ctx context.Context, client *acme.Client) (error, error) {
+func (t *ticket) GetError(ctx context.Context, client *acme.Client) (orderError error, getError error) {
 	o, err := client.GetOrder(ctx, t.uri)
 	if err != nil {
 		return nil, err
