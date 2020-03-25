@@ -133,6 +133,14 @@
   version = "v4.6.0"
 
 [[projects]]
+  digest = "1:53becd66889185091b58ea3fc49294996f2179fb05a89702f4de7d15e581b509"
+  name = "github.com/go-logr/logr"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "9fb12b3b21c5415d16ac18dc5cd42c1cfdd40c4e"
+  version = "v0.1.0"
+
+[[projects]]
   digest = "1:b38ab1b8cf42d089d9f31d4918c57c2dd47d42f3e7fc50e12142140228cf81a9"
   name = "github.com/gogo/protobuf"
   packages = [
@@ -333,6 +341,14 @@
   version = "1.0.1"
 
 [[projects]]
+  digest = "1:c01e66557785d9d75328704d11c44c26582980cd78209475cb141b3eedd11e9f"
+  name = "github.com/openzipkin/zipkin-go"
+  packages = ["model"]
+  pruneopts = "NUT"
+  revision = "c29478e51bfb2e9c93e0e9f5e015e5993a490399"
+  version = "v0.2.2"
+
+[[projects]]
   digest = "1:4047c378584616813d610c9f993bf90dd0d07aed8d94bd3bc299cd35ececdcba"
   name = "github.com/pkg/errors"
   packages = ["."]
@@ -475,13 +491,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9a0783fa61cafe1bcc47d03c0543c8284b942f335d17cd39c17d4c32b3bb6909"
+  digest = "1:9f11de68ee2374099dbbbd8d0918334fdc9bae2e8b584b60745ec7097bb721b9"
   name = "golang.org/x/net"
   packages = [
     "context",
     "context/ctxhttp",
     "http/httpguts",
     "http2",
+    "http2/h2c",
     "http2/hpack",
     "idna",
     "internal/timeseries",
@@ -853,7 +870,7 @@
   version = "kubernetes-1.16.4"
 
 [[projects]]
-  digest = "1:364aa5bd7fbb75ef29a472cd7b36ebfa8d288017a3d59bb57bb0fd855adfbc13"
+  digest = "1:1fb85b8e92f6f47ca0543bfa10df14c2a7a47e2aa4f1d155f1fad0fac3523f09"
   name = "k8s.io/client-go"
   packages = [
     "discovery",
@@ -1032,9 +1049,12 @@
     "pkg/apis/clientauthentication/v1beta1",
     "pkg/version",
     "plugin/pkg/client/auth/exec",
+    "plugin/pkg/client/auth/gcp",
+    "plugin/pkg/client/auth/oidc",
     "rest",
     "rest/watch",
     "testing",
+    "third_party/forked/golang/template",
     "tools/auth",
     "tools/cache",
     "tools/clientcmd",
@@ -1053,6 +1073,7 @@
     "util/connrotation",
     "util/flowcontrol",
     "util/homedir",
+    "util/jsonpath",
     "util/keyutil",
     "util/retry",
     "util/workqueue",
@@ -1201,6 +1222,13 @@
     "signals",
     "system",
     "system/testing",
+    "test",
+    "test/helpers",
+    "test/ingress",
+    "test/logging",
+    "test/monitoring",
+    "test/spoof",
+    "test/zipkin",
     "tracker",
     "version",
     "webhook",
@@ -1210,7 +1238,7 @@
   revision = "c13e86e2d4f484f1dd3b8ca6474994c16da74f20"
 
 [[projects]]
-  digest = "1:021e7884883049c65a0577d7c95f09addf8a858bf8f0faa77df70cdf4776bbed"
+  digest = "1:23f5ced7de2eda1277d719fbb0e47262895b9de5fc1ebf806bf494c542f43f0e"
   name = "knative.dev/serving"
   packages = [
     "pkg/apis/autoscaling",
@@ -1277,9 +1305,12 @@
     "pkg/client/listers/serving/v1",
     "pkg/client/listers/serving/v1alpha1",
     "pkg/client/listers/serving/v1beta1",
+    "pkg/network",
     "pkg/reconciler/testing/v1alpha1",
+    "test",
+    "test/conformance/certificate/http01",
   ]
-  pruneopts = "NUT"
+  pruneopts = ""
   revision = "595c67ca5012c51fe4ef9208ebf361a40e5684b6"
   version = "v0.13.1"
 
@@ -1353,6 +1384,8 @@
     "knative.dev/serving/pkg/client/injection/informers/networking/v1alpha1/certificate/fake",
     "knative.dev/serving/pkg/client/injection/reconciler/networking/v1alpha1/certificate",
     "knative.dev/serving/pkg/reconciler/testing/v1alpha1",
+    "knative.dev/serving/test",
+    "knative.dev/serving/test/conformance/certificate/http01",
     "knative.dev/test-infra/scripts",
     "knative.dev/test-infra/tools/dep-collector",
   ]
