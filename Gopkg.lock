@@ -184,7 +184,7 @@
   version = "v1.3.5"
 
 [[projects]]
-  digest = "1:010d46ea3c1e730897e53058d1013a963f3f987675dda87df64f891b945281db"
+  digest = "1:f0ae868d945753df81e797524bb7f3c577bcf751ce515c18162d259ca3ff8de7"
   name = "github.com/google/go-cmp"
   packages = [
     "cmp",
@@ -195,7 +195,8 @@
     "cmp/internal/value",
   ]
   pruneopts = "NUT"
-  revision = "6f77996f0c42f7b84e5a2b252227263f93432e9b"
+  revision = "5a6f75716e1203a923a78c9efb94089d857df0f6"
+  version = "v0.4.0"
 
 [[projects]]
   digest = "1:ecc8bd577aaaa8ce2c3ad060e61e1daeadbab1d14a0934f019ad2995c3a666b0"
@@ -587,6 +588,17 @@
   ]
   pruneopts = "NUT"
   revision = "7ca132754999accbaa5c1735eda29e7ce0f3bf03"
+
+[[projects]]
+  branch = "master"
+  digest = "1:325a1b73817aa79fc85f10376ed41ea607f7dd7f6c6bfa46df6a28ef2857941f"
+  name = "golang.org/x/xerrors"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "NUT"
+  revision = "9bdfabe68543c54f90421aeb9a60ef8061b5b544"
 
 [[projects]]
   digest = "1:79c5b7c79609e7e2d0c5a6509cc5894bb8ee9c2ca6e741214f8aa4317beeea59"
@@ -1177,7 +1189,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:94d7cfde4eee652c089b47f0200b86bc28e618de18a2e5368b0bbc8e2b601026"
+  digest = "1:cce67309d9313f0f3fa67394d4dabe0165a202109995b51bd53479f5ce87000f"
   name = "knative.dev/pkg"
   packages = [
     "apis",
@@ -1235,7 +1247,7 @@
     "webhook/certificates/resources",
   ]
   pruneopts = "T"
-  revision = "c13e86e2d4f484f1dd3b8ca6474994c16da74f20"
+  revision = "ce05a3de31ed80e98862a0ea024977097fd0e4a5"
 
 [[projects]]
   digest = "1:23f5ced7de2eda1277d719fbb0e47262895b9de5fc1ebf806bf494c542f43f0e"
@@ -1316,14 +1328,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3f2366ce9a05503ac8da902b58e898c285cc9a972e0e89fda0b2a2fedcd4fb46"
+  digest = "1:5da0f15efcd7dafa6296be9cd4a630fcb5253cf202e54638299221ae7df419ab"
   name = "knative.dev/test-infra"
   packages = [
     "scripts",
     "tools/dep-collector",
   ]
   pruneopts = "UT"
-  revision = "64929018c86389e47a88782619565b6d099c0a5a"
+  revision = "163337c1d67d883a84d10c4e769e6fc493649341"
 
 [[projects]]
   digest = "1:5fdf0517a870044f13def5f9f2dc75eb8cfb88baf7862eaf9884a06152f9391b"
