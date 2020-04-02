@@ -1189,7 +1189,20 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:cce67309d9313f0f3fa67394d4dabe0165a202109995b51bd53479f5ce87000f"
+  digest = "1:40164b953ec50e7badcfb5048e8081f19ba240aa376b3959065be41fae656771"
+  name = "knative.dev/net-http01"
+  packages = [
+    "pkg/challenger",
+    "pkg/ordermanager",
+    "pkg/reconciler/certificate",
+    "pkg/reconciler/certificate/resources",
+  ]
+  pruneopts = "NUT"
+  revision = "f3cd0f0890427863c675edbb681fbc4af3f16175"
+
+[[projects]]
+  branch = "master"
+  digest = "1:ae72dd6d2950c1ffe31061c827bb8904fce102f9134c4309cca0fe1ac5864c26"
   name = "knative.dev/pkg"
   packages = [
     "apis",
@@ -1247,7 +1260,7 @@
     "webhook/certificates/resources",
   ]
   pruneopts = "T"
-  revision = "ce05a3de31ed80e98862a0ea024977097fd0e4a5"
+  revision = "55250e6aab62f767b8680a12ddeb771c519d78fe"
 
 [[projects]]
   digest = "1:23f5ced7de2eda1277d719fbb0e47262895b9de5fc1ebf806bf494c542f43f0e"
@@ -1370,6 +1383,10 @@
     "k8s.io/code-generator/cmd/defaulter-gen",
     "k8s.io/code-generator/cmd/informer-gen",
     "k8s.io/code-generator/cmd/lister-gen",
+    "knative.dev/net-http01/pkg/challenger",
+    "knative.dev/net-http01/pkg/ordermanager",
+    "knative.dev/net-http01/pkg/reconciler/certificate",
+    "knative.dev/net-http01/pkg/reconciler/certificate/resources",
     "knative.dev/pkg/apis",
     "knative.dev/pkg/client/injection/kube/client",
     "knative.dev/pkg/client/injection/kube/client/fake",
