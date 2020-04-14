@@ -203,7 +203,7 @@
   name = "github.com/google/go-containerregistry"
   packages = ["pkg/name"]
   pruneopts = "NUT"
-  revision = "955bf358a3d8d1ebfa6204338ef3fe364255cd85"
+  revision = "3d03ed9b1ca2ad5d78d43832e8e46adc31d2b961"
 
 [[projects]]
   digest = "1:3ec6c8e4b700377066dbb5ab3155c55f97109ab6147fee9423a68506d79bbafa"
@@ -1250,7 +1250,8 @@
   revision = "2a1db869228ceaca9df34790b49cdf4893a5d39d"
 
 [[projects]]
-  digest = "1:1b02c27cfb23d3f21fa37b7a0e66631db4f48c55776e2a7e4182ac93097c5336"
+  branch = "release-0.14"
+  digest = "1:e336a2cd9959a11483e352590477e611d146db86028f7044453190b0b3bd1097"
   name = "knative.dev/serving"
   packages = [
     "pkg/apis/autoscaling",
@@ -1305,13 +1306,8 @@
     "pkg/client/injection/informers/networking/v1alpha1/certificate/fake",
     "pkg/client/injection/reconciler/networking/v1alpha1/certificate",
     "pkg/client/istio/clientset/versioned",
-    "pkg/client/istio/clientset/versioned/fake",
     "pkg/client/istio/clientset/versioned/scheme",
     "pkg/client/istio/clientset/versioned/typed/networking/v1alpha3",
-    "pkg/client/istio/clientset/versioned/typed/networking/v1alpha3/fake",
-    "pkg/client/istio/injection/client",
-    "pkg/client/istio/injection/client/fake",
-    "pkg/client/istio/listers/networking/v1alpha3",
     "pkg/client/listers/autoscaling/v1alpha1",
     "pkg/client/listers/networking/v1alpha1",
     "pkg/client/listers/serving/v1",
@@ -1323,19 +1319,18 @@
     "test/conformance/certificate/http01",
   ]
   pruneopts = ""
-  revision = "aa470a6af2da383a5cc81483dfd476d41bbd1830"
-  version = "v0.13.2"
+  revision = "f87352b72c48286f164838ddc6684c805ea082a9"
 
 [[projects]]
-  branch = "master"
-  digest = "1:dc73d65f40ea05b1d0db96ae5491b6ebc162bb59b3ac5a252cdf87848bc7a4b7"
+  branch = "release-0.14"
+  digest = "1:50482e6fd500cf50c4a29d640cda026206145c6716dff72e4368a5e57fdb7095"
   name = "knative.dev/test-infra"
   packages = [
     "scripts",
     "tools/dep-collector",
   ]
   pruneopts = "UT"
-  revision = "5e04d955cdb9a460b5d3f2a699bddcab22c8af94"
+  revision = "9fa5882b65c5fe7e177bb74874e9a5ac87b84e98"
 
 [[projects]]
   digest = "1:5fdf0517a870044f13def5f9f2dc75eb8cfb88baf7862eaf9884a06152f9391b"
