@@ -40,15 +40,15 @@ required = [
 
 [[override]]
   name = "knative.dev/pkg"
-  branch = "release-0.14"
+  branch = "master"
 
 [[override]]
   name = "knative.dev/test-infra"
-  branch = "release-0.14"
+  branch = "master"
 
 [[override]]
   name = "knative.dev/serving"
-  branch = "release-0.14"
+  branch = "master"
 
 # Istio is referenced from the table testing we use...
 [[override]]
