@@ -21,7 +21,8 @@ source $(dirname $0)/e2e-common.sh
 initialize $@  --skip-istio-addon
 
 go_test_e2e -timeout=20m -parallel=12 \
-	    ./vendor/knative.dev/serving/test/conformance/certificate/http01 \
-	    --certificateClass=net-http01.certificate.networking.knative.dev
+	    knative.dev/serving/test/conformance/certificate/http01 \
+	    --certificateClass=net-http01.certificate.networking.knative.dev || fail_test
 
 success
+
