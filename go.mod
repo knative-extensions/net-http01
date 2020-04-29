@@ -1,6 +1,6 @@
 module knative.dev/net-http01
 
-go 1.13
+go 1.14
 
 require (
 	contrib.go.opencensus.io/exporter/ocagent v0.6.0 // indirect
@@ -47,4 +47,13 @@ require (
 	knative.dev/serving v0.14.1-0.20200427143750-334c0b8c5779
 	knative.dev/test-infra v0.0.0-20200427164251-3205a40d6171
 	sigs.k8s.io/yaml v1.2.0 // indirect
+)
+
+replace (
+	github.com/prometheus/client_golang => github.com/prometheus/client_golang v0.9.2
+	k8s.io/api => k8s.io/api v0.16.4
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.16.4
+	k8s.io/apimachinery => k8s.io/apimachinery v0.16.4
+	k8s.io/client-go => k8s.io/client-go v0.16.4
+	k8s.io/code-generator => k8s.io/code-generator v0.16.4
 )

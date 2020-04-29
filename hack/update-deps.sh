@@ -25,7 +25,6 @@ cd ${ROOT_DIR}
 
 # We need these flags for things to work properly.
 export GO111MODULE=on
-export GOFLAGS=-mod=vendor
 
 # This controls the release branch we track.
 VERSION="master"
@@ -63,6 +62,8 @@ rm -rf $(find vendor/ -name 'OWNERS')
 # Remove unit tests & e2e tests.
 rm -rf $(find vendor/ -path '*/pkg/*_test.go')
 rm -rf $(find vendor/ -path '*/e2e/*_test.go')
+
+export GOFLAGS=-mod=vendor
 
 # Do this for every package under "cmd" except kodata and cmd itself.
 update_licenses third_party/VENDOR-LICENSE "$(find ./cmd -type d | grep -v kodata | grep -vE 'cmd$')"
