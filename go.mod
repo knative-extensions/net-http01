@@ -1,6 +1,6 @@
 module knative.dev/net-http01
 
-go 1.14
+go 1.13
 
 require (
 	github.com/google/go-cmp v0.4.0
@@ -23,7 +23,7 @@ require (
 	k8s.io/utils v0.0.0-20200320200009-4a6ff033650d // indirect
 	knative.dev/pkg v0.0.0-20200429171842-47137cdc301d
 	knative.dev/serving v0.14.1-0.20200429184706-f0288152683e
-	knative.dev/test-infra v0.0.0-20200429194242-c1fe00ea21f9
+	knative.dev/test-infra v0.0.0-20200429211942-f4c4853375cf
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
 
