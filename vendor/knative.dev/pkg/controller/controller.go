@@ -96,7 +96,7 @@ func Filter(gvk schema.GroupVersionKind) func(obj interface{}) bool {
 // cache.FilteringResourceEventHandler that filter based on the
 // schema.GroupVersionKind of the controlling resources.
 //
-// Deprecated: Use FilterControlledByGVK instead.
+// Deprecated: Use FilterControllerGVK instead.
 func FilterGroupVersionKind(gvk schema.GroupVersionKind) func(obj interface{}) bool {
 	return FilterControllerGVK(gvk)
 }
@@ -122,7 +122,7 @@ func FilterControllerGVK(gvk schema.GroupVersionKind) func(obj interface{}) bool
 // cache.FilteringResourceEventHandler that filter based on the
 // schema.GroupKind of the controlling resources.
 //
-// Deprecated: Use FilterControlledByGK instead
+// Deprecated: Use FilterControllerGK instead
 func FilterGroupKind(gk schema.GroupKind) func(obj interface{}) bool {
 	return FilterControllerGK(gk)
 }
@@ -427,20 +427,20 @@ func (c *Impl) processNextWorkItem() bool {
 	// Embed the key into the logger and attach that to the context we pass
 	// to the Reconciler.
 	logger := c.logger.With(zap.String(logkey.TraceId, uuid.New().String()), zap.String(logkey.Key, keyStr))
-	ctx := logging.WithLogger(context.TODO(), logger)
+	ctx := logging.WithLogger(context.Background(), logger)
 
 	// Run Reconcile, passing it the namespace/name string of the
 	// resource to be synced.
 	if err = c.Reconciler.Reconcile(ctx, keyStr); err != nil {
 		c.handleErr(err, key)
-		logger.Infof("Reconcile failed. Time taken: %v.", time.Since(startTime))
+		logger.Info("Reconcile failed. Time taken: ", time.Since(startTime))
 		return true
 	}
 
 	// Finally, if no error occurs we Forget this item so it does not
 	// have any delay when another change happens.
 	c.WorkQueue.Forget(key)
-	logger.Infof("Reconcile succeeded. Time taken: %v.", time.Since(startTime))
+	logger.Info("Reconcile succeeded. Time taken: ", time.Since(startTime))
 
 	return true
 }
