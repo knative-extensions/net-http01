@@ -752,7 +752,6 @@ knative.dev/serving/pkg/reconciler/testing/v1alpha1
 knative.dev/serving/test
 knative.dev/serving/test/conformance/certificate
 knative.dev/serving/test/conformance/certificate/http01
-knative.dev/serving/test/conformance/certificate/nonhttp01
 knative.dev/serving/test/test_images/flaky
 knative.dev/serving/test/test_images/grpc-ping
 knative.dev/serving/test/test_images/grpc-ping/proto

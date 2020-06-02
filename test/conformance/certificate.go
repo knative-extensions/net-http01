@@ -19,7 +19,6 @@ import (
 	"testing"
 
 	"knative.dev/serving/test/conformance/certificate/http01"
-	"knative.dev/serving/test/conformance/certificate/nonhttp01"
 )
 
 func TestHTTP01Conformance(t *testing.T) {
