@@ -1,6 +1,6 @@
 module knative.dev/net-http01
 
-go 1.13
+go 1.14
 
 require (
 	github.com/google/go-cmp v0.4.0
@@ -10,15 +10,13 @@ require (
 	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
 	istio.io/client-go v0.0.0-20200227214646-23b87b42e49b // indirect
 	istio.io/gogo-genproto v0.0.0-20200130224810-a0338448499a // indirect
-	k8s.io/api v0.17.4
-	k8s.io/apiextensions-apiserver v0.17.4 // indirect
-	k8s.io/apimachinery v0.17.4
+	k8s.io/api v0.17.6
+	k8s.io/apimachinery v0.17.6
 	k8s.io/client-go v11.0.1-0.20190805182717-6502b5e7b1b5+incompatible
-	k8s.io/kube-openapi v0.0.0-20200204173128-addea2498afe // indirect
 	k8s.io/utils v0.0.0-20200320200009-4a6ff033650d // indirect
-	knative.dev/pkg v0.0.0-20200525211048-874e3e0c13f5
-	knative.dev/serving v0.15.1-0.20200526161358-ba65219c13d8
-	knative.dev/test-infra v0.0.0-20200522180958-6a0a9b9d893a
+	knative.dev/pkg v0.0.0-20200528190300-08a86da47d28
+	knative.dev/serving v0.15.1-0.20200603004117-143a598d3478
+	knative.dev/test-infra v0.0.0-20200528222301-350178ab2a0e
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
 
