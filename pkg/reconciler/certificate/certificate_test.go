@@ -38,23 +38,23 @@ import (
 	clientgotesting "k8s.io/client-go/testing"
 	"knative.dev/net-http01/pkg/ordermanager"
 	"knative.dev/net-http01/pkg/reconciler/certificate/resources"
+	"knative.dev/networking/pkg/apis/networking"
+	v1alpha1 "knative.dev/networking/pkg/apis/networking/v1alpha1"
+	certreconciler "knative.dev/networking/pkg/client/injection/reconciler/networking/v1alpha1/certificate"
 	"knative.dev/pkg/apis"
 	configmap "knative.dev/pkg/configmap"
 	controller "knative.dev/pkg/controller"
 	logging "knative.dev/pkg/logging"
-	"knative.dev/serving/pkg/apis/networking"
-	v1alpha1 "knative.dev/serving/pkg/apis/networking/v1alpha1"
-	certreconciler "knative.dev/serving/pkg/client/injection/reconciler/networking/v1alpha1/certificate"
 
+	networkingclient "knative.dev/networking/pkg/client/injection/client/fake"
+	_ "knative.dev/networking/pkg/client/injection/informers/networking/v1alpha1/certificate/fake"
 	kubeclient "knative.dev/pkg/client/injection/kube/client/fake"
 	_ "knative.dev/pkg/client/injection/kube/informers/core/v1/endpoints/fake"
 	_ "knative.dev/pkg/client/injection/kube/informers/core/v1/secret/fake"
 	_ "knative.dev/pkg/client/injection/kube/informers/core/v1/service/fake"
-	servingclient "knative.dev/serving/pkg/client/injection/client/fake"
-	_ "knative.dev/serving/pkg/client/injection/informers/networking/v1alpha1/certificate/fake"
 
 	. "knative.dev/pkg/reconciler/testing"
-	. "knative.dev/serving/pkg/reconciler/testing/v1alpha1"
+	. "knative.dev/serving/pkg/reconciler/testing/v1"
 )
 
 func TestReconcileMakingOrders(t *testing.T) {
@@ -377,7 +377,7 @@ func TestReconcileMakingOrders(t *testing.T) {
 			},
 		}
 
-		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), servingclient.Get(ctx),
+		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), networkingclient.Get(ctx),
 			listers.GetCertificateLister(), controller.GetEventRecorder(ctx), r, CertificateClassName)
 	}))
 }
@@ -422,7 +422,7 @@ func TestReconcileOrderError(t *testing.T) {
 			},
 		}
 
-		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), servingclient.Get(ctx),
+		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), networkingclient.Get(ctx),
 			listers.GetCertificateLister(), controller.GetEventRecorder(ctx), r, CertificateClassName)
 	}))
 }
@@ -595,7 +595,7 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 			},
 		}
 
-		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), servingclient.Get(ctx),
+		return certreconciler.NewReconciler(ctx, logging.FromContext(ctx), networkingclient.Get(ctx),
 			listers.GetCertificateLister(), controller.GetEventRecorder(ctx), r, CertificateClassName)
 	}))
 }

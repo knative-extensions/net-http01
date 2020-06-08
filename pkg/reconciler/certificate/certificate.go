@@ -28,10 +28,10 @@ import (
 	corev1listers "k8s.io/client-go/listers/core/v1"
 	"knative.dev/net-http01/pkg/ordermanager"
 	"knative.dev/net-http01/pkg/reconciler/certificate/resources"
+	v1alpha1 "knative.dev/networking/pkg/apis/networking/v1alpha1"
+	certificate "knative.dev/networking/pkg/client/injection/reconciler/networking/v1alpha1/certificate"
 	logging "knative.dev/pkg/logging"
 	reconciler "knative.dev/pkg/reconciler"
-	v1alpha1 "knative.dev/serving/pkg/apis/networking/v1alpha1"
-	certificate "knative.dev/serving/pkg/client/injection/reconciler/networking/v1alpha1/certificate"
 )
 
 // Reconciler implements controller.Reconciler for Certificate resources.
