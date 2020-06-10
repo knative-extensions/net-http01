@@ -71,15 +71,15 @@ func NewController(
 	certificateInformer.Informer().AddEventHandler(certHandler)
 
 	secretInformer.Informer().AddEventHandler(cache.FilteringResourceEventHandler{
-		FilterFunc: controller.FilterGroupKind(v1alpha1.Kind("Certificate")),
+		FilterFunc: controller.FilterControllerGK(v1alpha1.Kind("Certificate")),
 		Handler:    controller.HandleAll(impl.EnqueueControllerOf),
 	})
 	serviceInformer.Informer().AddEventHandler(cache.FilteringResourceEventHandler{
-		FilterFunc: controller.FilterGroupKind(v1alpha1.Kind("Certificate")),
+		FilterFunc: controller.FilterControllerGK(v1alpha1.Kind("Certificate")),
 		Handler:    controller.HandleAll(impl.EnqueueControllerOf),
 	})
 	endpointsInformer.Informer().AddEventHandler(cache.FilteringResourceEventHandler{
-		FilterFunc: controller.FilterGroupKind(v1alpha1.Kind("Certificate")),
+		FilterFunc: controller.FilterControllerGK(v1alpha1.Kind("Certificate")),
 		Handler:    controller.HandleAll(impl.EnqueueControllerOf),
 	})
 

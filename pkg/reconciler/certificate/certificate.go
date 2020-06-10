@@ -105,13 +105,13 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, o *v1alpha1.Certificate)
 			return err
 		}
 		if secret == nil {
-			if secret, err = r.kubeClient.CoreV1().Secrets(wantSecret.Namespace).Create(wantSecret); err != nil {
+			if _, err = r.kubeClient.CoreV1().Secrets(wantSecret.Namespace).Create(wantSecret); err != nil {
 				return err
 			}
 		} else {
 			secret := secret.DeepCopy()
 			secret.Data = wantSecret.Data
-			if secret, err = r.kubeClient.CoreV1().Secrets(secret.Namespace).Update(secret); err != nil {
+			if _, err = r.kubeClient.CoreV1().Secrets(secret.Namespace).Update(secret); err != nil {
 				return err
 			}
 		}
@@ -158,7 +158,7 @@ func (r *Reconciler) reconcileEndpoints(ctx context.Context, o *v1alpha1.Certifi
 		if !equality.Semantic.DeepEqual(ep.Subsets, desired.Subsets) {
 			ep = ep.DeepCopy()
 			ep.Subsets = desired.Subsets
-			if ep, err = r.kubeClient.CoreV1().Endpoints(o.Namespace).Update(ep); err != nil {
+			if _, err = r.kubeClient.CoreV1().Endpoints(o.Namespace).Update(ep); err != nil {
 				return err
 			}
 		}
