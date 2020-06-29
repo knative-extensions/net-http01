@@ -43,7 +43,7 @@ func main() {
 
 	go http.ListenAndServe(":8080", chlr)
 
-	sharedmain.MainWithContext(ctx, "controller",
+	sharedmain.MainWithContext(ctx, "net-http01",
 		func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
 			return certificate.NewController(ctx, cmw, chlr)
 		},
