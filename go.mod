@@ -3,20 +3,20 @@ module knative.dev/net-http01
 go 1.14
 
 require (
-	github.com/google/go-cmp v0.4.0
+	github.com/google/go-cmp v0.5.0
 	github.com/grpc-ecosystem/grpc-gateway v1.14.3 // indirect
 	github.com/json-iterator/go v1.1.9 // indirect
-	golang.org/x/crypto v0.0.0-20200320181102-891825fb96df
-	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
 	istio.io/gogo-genproto v0.0.0-20200130224810-a0338448499a // indirect
 	k8s.io/api v0.18.1
-	k8s.io/apimachinery v0.18.1
+	k8s.io/apimachinery v0.18.5
 	k8s.io/client-go v11.0.1-0.20190805182717-6502b5e7b1b5+incompatible
 	k8s.io/utils v0.0.0-20200320200009-4a6ff033650d // indirect
-	knative.dev/networking v0.0.0-20200630191330-5080f859c17d
-	knative.dev/pkg v0.0.0-20200702222342-ea4d6e985ba0
-	knative.dev/serving v0.15.1-0.20200707011544-d74ecbeb1071
-	knative.dev/test-infra v0.0.0-20200630141629-15f40fe97047
+	knative.dev/networking v0.0.0-20200707203944-725ec013d8a2
+	knative.dev/pkg v0.0.0-20200707190344-0a8314b44495
+	knative.dev/serving v0.16.1-0.20200707200544-47f8b0ede63a
+	knative.dev/test-infra v0.0.0-20200707183444-aed09e56ddc7
 )
 
 replace (
