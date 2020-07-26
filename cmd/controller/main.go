@@ -25,6 +25,7 @@ import (
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/injection/sharedmain"
 	"knative.dev/pkg/signals"
+	"knative.dev/serving/pkg/network"
 
 	"knative.dev/net-http01/pkg/challenger"
 	"knative.dev/net-http01/pkg/reconciler/certificate"
@@ -41,7 +42,7 @@ func main() {
 		log.Fatalf("Error creating challenger: %v", err)
 	}
 
-	go http.ListenAndServe(":8080", chlr)
+	go http.ListenAndServe(":8080", network.NewProbeHandler(chlr))
 
 	sharedmain.MainWithContext(ctx, "net-http01",
 		func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
