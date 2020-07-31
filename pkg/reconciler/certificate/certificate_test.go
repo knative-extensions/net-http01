@@ -53,8 +53,8 @@ import (
 	_ "knative.dev/pkg/client/injection/kube/informers/core/v1/secret/fake"
 	_ "knative.dev/pkg/client/injection/kube/informers/core/v1/service/fake"
 
+	. "knative.dev/net-http01/pkg/reconciler/testing"
 	. "knative.dev/pkg/reconciler/testing"
-	. "knative.dev/serving/pkg/reconciler/testing/v1"
 )
 
 func TestReconcileMakingOrders(t *testing.T) {
