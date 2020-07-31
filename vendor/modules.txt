@@ -231,7 +231,7 @@ golang.org/x/oauth2/jwt
 ## explicit
 golang.org/x/sync/errgroup
 golang.org/x/sync/semaphore
-# golang.org/x/sys v0.0.0-20200722175500-76b94024e4b6
+# golang.org/x/sys v0.0.0-20200728102440-3e129f6d46b1
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
@@ -268,7 +268,7 @@ google.golang.org/appengine/internal/socket
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/socket
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20200722002428-88e341933a54
+# google.golang.org/genproto v0.0.0-20200728010541-3dc8dca74b7b
 google.golang.org/genproto/googleapis/api
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/distribution
@@ -705,7 +705,7 @@ k8s.io/utils/buffer
 k8s.io/utils/integer
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# knative.dev/caching v0.0.0-20200723145958-d031ce9de55d
+# knative.dev/caching v0.0.0-20200729172100-446be8987215
 knative.dev/caching/pkg/apis/caching
 knative.dev/caching/pkg/apis/caching/v1alpha1
 knative.dev/caching/pkg/client/clientset/versioned
@@ -716,7 +716,7 @@ knative.dev/caching/pkg/client/clientset/versioned/typed/caching/v1alpha1/fake
 knative.dev/caching/pkg/client/injection/client
 knative.dev/caching/pkg/client/injection/client/fake
 knative.dev/caching/pkg/client/listers/caching/v1alpha1
-# knative.dev/networking v0.0.0-20200724160858-a48770266a29
+# knative.dev/networking v0.0.0-20200730222100-e8df1ba775fa
 ## explicit
 knative.dev/networking/pkg/apis/config
 knative.dev/networking/pkg/apis/networking
@@ -739,7 +739,7 @@ knative.dev/networking/pkg/client/injection/informers/networking/v1alpha1/certif
 knative.dev/networking/pkg/client/injection/reconciler/networking/v1alpha1/certificate
 knative.dev/networking/pkg/client/istio/listers/networking/v1alpha3
 knative.dev/networking/pkg/client/listers/networking/v1alpha1
-# knative.dev/pkg v0.0.0-20200724211057-f21f66204a5c
+# knative.dev/pkg v0.0.0-20200731005101-694087017879
 ## explicit
 knative.dev/pkg/apis
 knative.dev/pkg/apis/duck
@@ -798,7 +798,7 @@ knative.dev/pkg/tracker
 knative.dev/pkg/version
 knative.dev/pkg/webhook
 knative.dev/pkg/webhook/certificates/resources
-# knative.dev/serving v0.16.1-0.20200724203457-1517b1735305
+# knative.dev/serving v0.16.1-0.20200731105301-2da382612fb7
 ## explicit
 knative.dev/serving/pkg/apis/autoscaling
 knative.dev/serving/pkg/apis/autoscaling/v1alpha1
@@ -844,7 +844,7 @@ knative.dev/serving/test/test_images/runtime/handlers
 knative.dev/serving/test/test_images/timeout
 knative.dev/serving/test/test_images/wsserver
 knative.dev/serving/test/types
-# knative.dev/test-infra v0.0.0-20200724213858-d5ec9cdc6b33
+# knative.dev/test-infra v0.0.0-20200730214800-52f8800d5692
 ## explicit
 knative.dev/test-infra/scripts
 knative.dev/test-infra/tools/dep-collector
