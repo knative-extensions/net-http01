@@ -22,11 +22,11 @@ import (
 	_ "knative.dev/test-infra/scripts"
 	_ "knative.dev/test-infra/tools/dep-collector"
 
-	_ "knative.dev/serving/test/conformance/certificate/http01"
-	_ "knative.dev/serving/test/test_images/flaky"
-	_ "knative.dev/serving/test/test_images/grpc-ping"
-	_ "knative.dev/serving/test/test_images/httpproxy"
-	_ "knative.dev/serving/test/test_images/runtime"
-	_ "knative.dev/serving/test/test_images/timeout"
-	_ "knative.dev/serving/test/test_images/wsserver"
+	_ "knative.dev/networking/test/conformance/certificate/http01"
+	_ "knative.dev/networking/test/test_images/flaky"
+	_ "knative.dev/networking/test/test_images/grpc-ping"
+	_ "knative.dev/networking/test/test_images/httpproxy"
+	_ "knative.dev/networking/test/test_images/runtime"
+	_ "knative.dev/networking/test/test_images/timeout"
+	_ "knative.dev/networking/test/test_images/wsserver"
 )

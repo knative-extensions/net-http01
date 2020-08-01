@@ -21,11 +21,11 @@ import (
 	"log"
 	"net/http"
 
+	network "knative.dev/networking/pkg"
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/injection/sharedmain"
 	"knative.dev/pkg/signals"
-	"knative.dev/serving/pkg/network"
 
 	"knative.dev/net-http01/pkg/challenger"
 	"knative.dev/net-http01/pkg/reconciler/certificate"
