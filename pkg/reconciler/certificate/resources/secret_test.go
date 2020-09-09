@@ -151,9 +151,9 @@ func TestMakeSecret(t *testing.T) {
 			default:
 				if _, ok := got.Data[corev1.TLSPrivateKeyKey]; !ok {
 					t.Errorf("Secret is missing key: %s", corev1.TLSPrivateKeyKey)
-				} else {
-					// TODO(mattmoor): Further validate the private key?
 				}
+				// TODO(mattmoor): Further validate the private key?
+
 				// Clear it out, it's going to change every time.
 				got.Data[corev1.TLSPrivateKeyKey] = []byte("")
 
