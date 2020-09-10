@@ -80,6 +80,7 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, o *v1alpha1.Certificate)
 	// We don't "cancel" this context, because it is passed
 	// to Go routines that extend pass this function's return.
 	// TODO(mattmoor): 5 minutes is too long for this.
+	// nolint
 	ctx, _ = context.WithTimeout(ctx, 5*time.Minute)
 
 	chall, cert, err := r.orderManager.Order(ctx, o.Spec.DNSNames, o)
@@ -105,13 +106,13 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, o *v1alpha1.Certificate)
 			return err
 		}
 		if secret == nil {
-			if _, err = r.kubeClient.CoreV1().Secrets(wantSecret.Namespace).Create(wantSecret); err != nil {
+			if _, err := r.kubeClient.CoreV1().Secrets(wantSecret.Namespace).Create(wantSecret); err != nil {
 				return err
 			}
 		} else {
 			secret := secret.DeepCopy()
 			secret.Data = wantSecret.Data
-			if _, err = r.kubeClient.CoreV1().Secrets(secret.Namespace).Update(secret); err != nil {
+			if _, err := r.kubeClient.CoreV1().Secrets(secret.Namespace).Update(secret); err != nil {
 				return err
 			}
 		}
@@ -158,7 +159,7 @@ func (r *Reconciler) reconcileEndpoints(ctx context.Context, o *v1alpha1.Certifi
 		if !equality.Semantic.DeepEqual(ep.Subsets, desired.Subsets) {
 			ep = ep.DeepCopy()
 			ep.Subsets = desired.Subsets
-			if _, err = r.kubeClient.CoreV1().Endpoints(o.Namespace).Update(ep); err != nil {
+			if _, err := r.kubeClient.CoreV1().Endpoints(o.Namespace).Update(ep); err != nil {
 				return err
 			}
 		}
