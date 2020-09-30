@@ -32,11 +32,11 @@ function test_setup() {
 
   # Setting up test resources.
   echo ">> Creating test resources (test/config/)"
-  ko apply ${KO_FLAGS} -f test/config/ || return 1
+  ko apply --platform=all ${KO_FLAGS} -f test/config/ || return 1
 
   # Bringing up controllers.
   echo ">> Bringing up net-http01"
-  ko apply -f config/ || return 1
+  ko apply --platform=all -f config/ || return 1
 
   # Wait for pods to be running.
   echo ">> Waiting for Serving components to be running..."
