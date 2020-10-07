@@ -276,6 +276,8 @@ golang.org/x/tools/internal/typesinternal
 # golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
+# gomodules.xyz/jsonpatch/v2 v2.1.0
+gomodules.xyz/jsonpatch/v2
 # google.golang.org/api v0.31.0
 google.golang.org/api/internal
 google.golang.org/api/iterator
@@ -756,7 +758,7 @@ k8s.io/utils/buffer
 k8s.io/utils/integer
 k8s.io/utils/pointer
 k8s.io/utils/trace
-# knative.dev/networking v0.0.0-20201005014534-22c181d0626e
+# knative.dev/networking v0.0.0-20201007014820-8b51ffb23d22
 ## explicit
 knative.dev/networking/pkg
 knative.dev/networking/pkg/apis/networking
@@ -791,9 +793,10 @@ knative.dev/networking/test/test_images/runtime/handlers
 knative.dev/networking/test/test_images/timeout
 knative.dev/networking/test/test_images/wsserver
 knative.dev/networking/test/types
-# knative.dev/pkg v0.0.0-20201005175134-21cb070a8b05
+# knative.dev/pkg v0.0.0-20201006235820-46761ba7c3dc
 ## explicit
 knative.dev/pkg/apis
+knative.dev/pkg/apis/duck
 knative.dev/pkg/apis/duck/ducktypes
 knative.dev/pkg/apis/duck/v1
 knative.dev/pkg/changeset
@@ -845,7 +848,7 @@ knative.dev/pkg/tracker
 knative.dev/pkg/version
 knative.dev/pkg/webhook
 knative.dev/pkg/webhook/certificates/resources
-# knative.dev/test-infra v0.0.0-20201005191434-b298834c10f1
+# knative.dev/test-infra v0.0.0-20201006161322-f94f2bcbb2ee
 ## explicit
 knative.dev/test-infra/scripts
 knative.dev/test-infra/tools/dep-collector
