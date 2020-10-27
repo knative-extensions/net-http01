@@ -19,8 +19,7 @@ limitations under the License.
 package tools
 
 import (
-	_ "knative.dev/test-infra/scripts"
-	_ "knative.dev/test-infra/tools/dep-collector"
+	_ "knative.dev/hack"
 
 	_ "knative.dev/networking/test/conformance/certificate/http01"
 	_ "knative.dev/networking/test/test_images/flaky"
