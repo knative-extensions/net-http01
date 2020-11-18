@@ -21,6 +21,8 @@ package tools
 import (
 	_ "knative.dev/hack"
 
+	_ "knative.dev/pkg/hack"
+
 	_ "knative.dev/networking/test/conformance/certificate/http01"
 	_ "knative.dev/networking/test/test_images/flaky"
 	_ "knative.dev/networking/test/test_images/grpc-ping"
