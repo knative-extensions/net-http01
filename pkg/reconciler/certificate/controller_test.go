@@ -40,7 +40,7 @@ func TestNewController(t *testing.T) {
 		ordermanager.Endpoint = ordermanager.Production
 	}()
 
-	c := NewController(ctx, configMapWatcher, chlr)
+	c := NewController(ctx, configMapWatcher, chlr, 1234)
 	if c == nil {
 		t.Fatal("Expected NewController to return a non-nil value")
 	}

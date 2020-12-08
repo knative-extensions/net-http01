@@ -18,6 +18,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -42,11 +43,13 @@ func main() {
 		log.Fatalf("Error creating challenger: %v", err)
 	}
 
-	go http.ListenAndServe(":8080", network.NewProbeHandler(chlr))
+	port := 8765
+
+	go http.ListenAndServe(fmt.Sprint(":", port), network.NewProbeHandler(chlr))
 
 	sharedmain.MainWithContext(ctx, "net-http01",
 		func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
-			return certificate.NewController(ctx, cmw, chlr)
+			return certificate.NewController(ctx, cmw, chlr, port)
 		},
 	)
 }
