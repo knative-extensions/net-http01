@@ -17,11 +17,13 @@ permissions and limitations under the License.
 package resources
 
 import (
+	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	"knative.dev/networking/pkg/apis/networking/v1alpha1"
 	"knative.dev/pkg/ptr"
 )
@@ -31,6 +33,7 @@ func TestMakeService(t *testing.T) {
 		name string
 		o    *v1alpha1.Certificate
 		want *corev1.Service
+		opts []func(*corev1.Service)
 	}{{
 		name: "check owner refs one way",
 		o: &v1alpha1.Certificate{
@@ -51,7 +54,13 @@ func TestMakeService(t *testing.T) {
 					BlockOwnerDeletion: ptr.Bool(true),
 				}},
 			},
-			Spec: serviceSpec,
+			Spec: corev1.ServiceSpec{
+				Ports: []corev1.ServicePort{{
+					Name:       portName,
+					Port:       80,
+					TargetPort: intstr.FromInt(8080),
+				}},
+			},
 		},
 	}, {
 		name: "check owner refs another way",
@@ -73,13 +82,48 @@ func TestMakeService(t *testing.T) {
 					BlockOwnerDeletion: ptr.Bool(true),
 				}},
 			},
-			Spec: serviceSpec,
+			Spec: corev1.ServiceSpec{
+				Ports: []corev1.ServicePort{{
+					Name:       portName,
+					Port:       80,
+					TargetPort: intstr.FromInt(8080),
+				}},
+			},
 		},
+	}, {
+		name: "custom port",
+		o: &v1alpha1.Certificate{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "foo",
+				Namespace: "bar",
+			},
+		},
+		want: &corev1.Service{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "foo",
+				Namespace: "bar",
+				OwnerReferences: []metav1.OwnerReference{{
+					APIVersion:         "networking.internal.knative.dev/v1alpha1",
+					Kind:               "Certificate",
+					Name:               "foo",
+					Controller:         ptr.Bool(true),
+					BlockOwnerDeletion: ptr.Bool(true),
+				}},
+			},
+			Spec: corev1.ServiceSpec{
+				Ports: []corev1.ServicePort{{
+					Name:       portName,
+					Port:       80,
+					TargetPort: intstr.FromInt(1234),
+				}},
+			},
+		},
+		opts: []func(*corev1.Service){WithServicePort(1234)},
 	}}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := MakeService(test.o)
+			got := MakeService(test.o, test.opts...)
 			if !cmp.Equal(got, test.want) {
 				t.Errorf("MakeService (-want, +got) = %s", cmp.Diff(got, test.want))
 			}
@@ -92,6 +136,7 @@ func TestMakeEndpoints(t *testing.T) {
 		name string
 		o    *v1alpha1.Certificate
 		want *corev1.Endpoints
+		opts []func(*corev1.Endpoints)
 	}{{
 		name: "check owner refs one way",
 		o: &v1alpha1.Certificate{
@@ -112,7 +157,16 @@ func TestMakeEndpoints(t *testing.T) {
 					BlockOwnerDeletion: ptr.Bool(true),
 				}},
 			},
-			Subsets: endpointSubsets,
+			Subsets: []corev1.EndpointSubset{{
+				Addresses: []corev1.EndpointAddress{{
+					IP: os.Getenv("POD_IP"),
+				}},
+				Ports: []corev1.EndpointPort{{
+					Name:     portName,
+					Port:     8080,
+					Protocol: corev1.ProtocolTCP,
+				}},
+			}},
 		},
 	}, {
 		name: "check owner refs another way",
@@ -134,13 +188,54 @@ func TestMakeEndpoints(t *testing.T) {
 					BlockOwnerDeletion: ptr.Bool(true),
 				}},
 			},
-			Subsets: endpointSubsets,
+			Subsets: []corev1.EndpointSubset{{
+				Addresses: []corev1.EndpointAddress{{
+					IP: os.Getenv("POD_IP"),
+				}},
+				Ports: []corev1.EndpointPort{{
+					Name:     portName,
+					Port:     8080,
+					Protocol: corev1.ProtocolTCP,
+				}},
+			}},
 		},
+	}, {
+		name: "custom port",
+		o: &v1alpha1.Certificate{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "foo",
+				Namespace: "bar",
+			},
+		},
+		want: &corev1.Endpoints{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "foo",
+				Namespace: "bar",
+				OwnerReferences: []metav1.OwnerReference{{
+					APIVersion:         "networking.internal.knative.dev/v1alpha1",
+					Kind:               "Certificate",
+					Name:               "foo",
+					Controller:         ptr.Bool(true),
+					BlockOwnerDeletion: ptr.Bool(true),
+				}},
+			},
+			Subsets: []corev1.EndpointSubset{{
+				Addresses: []corev1.EndpointAddress{{
+					IP: os.Getenv("POD_IP"),
+				}},
+				Ports: []corev1.EndpointPort{{
+					Name:     portName,
+					Port:     1234,
+					Protocol: corev1.ProtocolTCP,
+				}},
+			}},
+		},
+		opts: []func(*corev1.Endpoints){WithEndpointsPort(1234)},
 	}}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			got := MakeEndpoints(test.o)
+			got := MakeEndpoints(test.o, test.opts...)
 			if !cmp.Equal(got, test.want) {
 				t.Errorf("MakeEndpoints (-want, +got) = %s", cmp.Diff(got, test.want))
 			}
