@@ -18,6 +18,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -29,12 +30,14 @@ import (
 	"knative.dev/pkg/signals"
 
 	"knative.dev/net-http01/pkg/challenger"
+	"knative.dev/net-http01/pkg/ordermanager"
 	"knative.dev/net-http01/pkg/reconciler/certificate"
 )
 
 func main() {
-	// Uncomment this to use the Let's Encrypt Staging environment.
-	// ordermanager.Endpoint = ordermanager.Staging
+	flag.StringVar(&ordermanager.Endpoint, "acme-endpoint", ordermanager.Endpoint,
+		fmt.Sprintf("The ACME endpoint to use for certificate challenges. Production: %s, Staging: %s",
+			ordermanager.Production, ordermanager.Staging))
 
 	ctx := signals.NewContext()
 
