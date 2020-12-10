@@ -36,6 +36,14 @@ spec:
         # This is the Go import path for the binary that is containerized
         # and substituted here.
         image: ko://knative.dev/net-http01/cmd/controller
+        args: [
+          # Production Let's Encrypt endpoint.
+          "-acme-endpoint", "https://acme-v02.api.letsencrypt.org/directory",
+
+          # Staging Let's Encrypt endpoint.
+          # "-acme-endpoint", "https://acme-staging-v02.api.letsencrypt.org/directory",
+        ]
+
         resources:
           requests:
             cpu: 100m
