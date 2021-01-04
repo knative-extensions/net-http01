@@ -417,6 +417,7 @@ func TestReconcileOrderError(t *testing.T) {
 			secretLister:    listers.GetSecretLister(),
 			serviceLister:   listers.GetK8sServiceLister(),
 			endpointsLister: listers.GetEndpointsLister(),
+			challengePort:   8080,
 
 			orderManager: &fakeOM{
 				err: errors.New("an error"),
@@ -590,6 +591,7 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 			secretLister:    listers.GetSecretLister(),
 			serviceLister:   listers.GetK8sServiceLister(),
 			endpointsLister: listers.GetEndpointsLister(),
+			challengePort:   8080,
 
 			orderManager: &fakeOM{
 				cert: tc,
