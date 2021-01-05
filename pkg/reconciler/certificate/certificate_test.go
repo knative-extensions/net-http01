@@ -34,6 +34,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	clientgotesting "k8s.io/client-go/testing"
 	"knative.dev/net-http01/pkg/ordermanager"
@@ -64,18 +65,18 @@ func TestReconcileMakingOrders(t *testing.T) {
 	}, {
 		Name: "create a bunch of stuff, make order, set challenges",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com")),
+			cert("kn-cert", "foo", withDomains("example.com")),
 		},
 		WantCreates: []runtime.Object{
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -86,15 +87,15 @@ func TestReconcileMakingOrders(t *testing.T) {
 					}}
 				}),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name: "steady state post creation",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -104,18 +105,39 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
+	}, {
+		Name: "cert has dots",
+		Objects: []runtime.Object{
+			cert("kn.cert.io", "foo", withDomains("example.com"), withUID("42-42-42"),
+				func(c *v1alpha1.Certificate) {
+					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
+					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
+						ServiceName:      "kn-cert",
+						ServiceNamespace: "foo",
+						ServicePort:      intstr.FromInt(80),
+						URL: &apis.URL{
+							Scheme: "http",
+							Host:   "example.com",
+							Path:   "/.acme/well-known/gobbledy-gook",
+						},
+					}}
+				}),
+			resources.MakeService(cert("kn.cert.io", "foo", withDomains("example.com"), withUID("42-42-42"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"), withUID("42-42-42"))),
+		},
+		Key: "foo/kn-cert",
 	}, {
 		Name: "update bad service",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -125,24 +147,24 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com")),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com")),
 				func(svc *corev1.Service) {
 					svc.Spec = corev1.ServiceSpec{}
 				}),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
+			Object: resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name: "update bad endpoints",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -152,16 +174,16 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com")),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com")),
 				func(ep *corev1.Endpoints) {
 					ep.Subsets = nil
 				}),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			Object: resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error creating service",
 		WantErr: true,
@@ -169,13 +191,13 @@ func TestReconcileMakingOrders(t *testing.T) {
 			InduceFailure("create", "services"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com")),
+			cert("kn-cert", "foo", withDomains("example.com")),
 		},
 		WantCreates: []runtime.Object{
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 				}),
@@ -183,7 +205,7 @@ func TestReconcileMakingOrders(t *testing.T) {
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for create services"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error creating endpoints",
 		WantErr: true,
@@ -191,14 +213,14 @@ func TestReconcileMakingOrders(t *testing.T) {
 			InduceFailure("create", "endpoints"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com")),
+			cert("kn-cert", "foo", withDomains("example.com")),
 		},
 		WantCreates: []runtime.Object{
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 				}),
@@ -206,7 +228,7 @@ func TestReconcileMakingOrders(t *testing.T) {
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for create endpoints"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error updating service",
 		WantErr: true,
@@ -214,11 +236,11 @@ func TestReconcileMakingOrders(t *testing.T) {
 			InduceFailure("update", "services"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -228,19 +250,19 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com")),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com")),
 				func(svc *corev1.Service) {
 					svc.Spec = corev1.ServiceSpec{}
 				}),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
+			Object: resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
 		}},
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for update services"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error updating endpoints",
 		WantErr: true,
@@ -248,11 +270,11 @@ func TestReconcileMakingOrders(t *testing.T) {
 			InduceFailure("update", "endpoints"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -262,27 +284,27 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com")),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com")),
 				func(ep *corev1.Endpoints) {
 					ep.Subsets = nil
 				}),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			Object: resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		}},
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for update endpoints"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name: "valid secret",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -292,12 +314,12 @@ func TestReconcileMakingOrders(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 			// This is based on the IsValidCert unit test.
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "knCert",
+					Name:      "kn-cert",
 					Namespace: "foo",
 				},
 				Data: map[string][]byte{
@@ -306,11 +328,11 @@ func TestReconcileMakingOrders(t *testing.T) {
 			},
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -323,17 +345,17 @@ func TestReconcileMakingOrders(t *testing.T) {
 					c.Status.MarkReady()
 				}),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name: "not enough time left",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com")),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			cert("kn-cert", "foo", withDomains("example.com")),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 			// This is based on the IsValidCert unit test.
 			&corev1.Secret{
 				ObjectMeta: metav1.ObjectMeta{
-					Name:      "knCert",
+					Name:      "kn-cert",
 					Namespace: "foo",
 				},
 				Data: map[string][]byte{
@@ -342,11 +364,11 @@ func TestReconcileMakingOrders(t *testing.T) {
 			},
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -358,7 +380,7 @@ func TestReconcileMakingOrders(t *testing.T) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 				}),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}}
 
 	table.Test(t, MakeFactory(func(ctx context.Context, listers *Listers, cmw configmap.Watcher) controller.Reconciler {
@@ -388,11 +410,11 @@ func TestReconcileOrderError(t *testing.T) {
 		Name:    "error placing order",
 		WantErr: true,
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -402,10 +424,10 @@ func TestReconcileOrderError(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "an error"),
 		},
@@ -436,11 +458,11 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 	table := TableTest{{
 		Name: "create a new TLS secret",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -450,18 +472,18 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantCreates: []runtime.Object{
-			mustMakeSecret(t, cert("knCert", "foo"), tc),
+			mustMakeSecret(t, cert("kn-cert", "foo"), tc),
 		},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -473,15 +495,15 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 					c.Status.MarkReady()
 				}),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name: "update the TLS secret",
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -491,21 +513,21 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
-			mustMakeSecret(t, cert("knCert", "foo"), tc, func(s *corev1.Secret) {
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
+			mustMakeSecret(t, cert("kn-cert", "foo"), tc, func(s *corev1.Secret) {
 				s.Data = nil
 			}),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: mustMakeSecret(t, cert("knCert", "foo"), tc),
+			Object: mustMakeSecret(t, cert("kn-cert", "foo"), tc),
 		}},
 		WantStatusUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: cert("knCert", "foo", withDomains("example.com"),
+			Object: cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.InitializeConditions()
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -517,7 +539,7 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 					c.Status.MarkReady()
 				}),
 		}},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error creating secret",
 		WantErr: true,
@@ -525,11 +547,11 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 			InduceFailure("create", "secrets"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -539,16 +561,16 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
 		},
 		WantCreates: []runtime.Object{
-			mustMakeSecret(t, cert("knCert", "foo"), tc),
+			mustMakeSecret(t, cert("kn-cert", "foo"), tc),
 		},
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for create secrets"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}, {
 		Name:    "error updating secret",
 		WantErr: true,
@@ -556,11 +578,11 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 			InduceFailure("update", "secrets"),
 		},
 		Objects: []runtime.Object{
-			cert("knCert", "foo", withDomains("example.com"),
+			cert("kn-cert", "foo", withDomains("example.com"),
 				func(c *v1alpha1.Certificate) {
 					c.Status.MarkNotReady("OrderCert", "Provisioning Certificate through HTTP01 challenges.")
 					c.Status.HTTP01Challenges = []v1alpha1.HTTP01Challenge{{
-						ServiceName:      "knCert",
+						ServiceName:      "kn-cert",
 						ServiceNamespace: "foo",
 						ServicePort:      intstr.FromInt(80),
 						URL: &apis.URL{
@@ -570,19 +592,19 @@ func TestReconcileOrderFulfillment(t *testing.T) {
 						},
 					}}
 				}),
-			resources.MakeService(cert("knCert", "foo", withDomains("example.com"))),
-			resources.MakeEndpoints(cert("knCert", "foo", withDomains("example.com"))),
-			mustMakeSecret(t, cert("knCert", "foo"), tc, func(s *corev1.Secret) {
+			resources.MakeService(cert("kn-cert", "foo", withDomains("example.com"))),
+			resources.MakeEndpoints(cert("kn-cert", "foo", withDomains("example.com"))),
+			mustMakeSecret(t, cert("kn-cert", "foo"), tc, func(s *corev1.Secret) {
 				s.Data = nil
 			}),
 		},
 		WantUpdates: []clientgotesting.UpdateActionImpl{{
-			Object: mustMakeSecret(t, cert("knCert", "foo"), tc),
+			Object: mustMakeSecret(t, cert("kn-cert", "foo"), tc),
 		}},
 		WantEvents: []string{
 			Eventf(corev1.EventTypeWarning, "InternalError", "inducing failure for update secrets"),
 		},
-		Key: "foo/knCert",
+		Key: "foo/kn-cert",
 	}}
 
 	table.Test(t, MakeFactory(func(ctx context.Context, listers *Listers, cmw configmap.Watcher) controller.Reconciler {
@@ -627,6 +649,12 @@ func cert(name, namespace string, opts ...certOption) *v1alpha1.Certificate {
 func withDomains(domains ...string) certOption {
 	return func(c *v1alpha1.Certificate) {
 		c.Spec.DNSNames = domains
+	}
+}
+
+func withUID(uid types.UID) certOption {
+	return func(c *v1alpha1.Certificate) {
+		c.UID = uid
 	}
 }
 
