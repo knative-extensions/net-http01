@@ -40,7 +40,7 @@ func ServiceName(cert *v1alpha1.Certificate) string {
 	//
 	// UUID are 35 chars long so we are under the 63 chars limit here,
 	// but we can use kmeta.ChildName here to be future-proof.
-	return kmeta.ChildName("challenge-for-"+string(cert.GetUID()), "")
+	return kmeta.ChildName("challenge-for-", string(cert.GetUID()))
 }
 
 // MakeService creates a Service, which we will point at ourselves.
