@@ -125,18 +125,19 @@ func TestMakeService(t *testing.T) {
 			ObjectMeta: metav1.ObjectMeta{
 				Name:      "foo.com",
 				Namespace: "bar",
-				UID:       "42-42-1234",
+				// UUID should be 35 chars long
+				UID: "123e4567-e89b-12d3-a456-426614174000",
 			},
 		},
 		want: &corev1.Service{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "challenge-for-42-42-1234",
+				Name:      "challenge-for-123e4567-e89b-12d3-a456-426614174000",
 				Namespace: "bar",
 				OwnerReferences: []metav1.OwnerReference{{
 					APIVersion:         "networking.internal.knative.dev/v1alpha1",
 					Kind:               "Certificate",
 					Name:               "foo.com",
-					UID:                "42-42-1234",
+					UID:                "123e4567-e89b-12d3-a456-426614174000",
 					Controller:         ptr.Bool(true),
 					BlockOwnerDeletion: ptr.Bool(true),
 				}},
