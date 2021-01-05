@@ -30,7 +30,7 @@ import (
 
 const portName = "http-challenge"
 
-func svcName(cert *v1alpha1.Certificate) string {
+func ServiceName(cert *v1alpha1.Certificate) string {
 	// Service names must be a DNS-1035 label. We try to use the
 	// Certificate name first if possible.
 	if name := kmeta.ChildName(cert.Name, ""); 0 == len(validation.IsDNS1035Label(name)) {
@@ -47,7 +47,7 @@ func svcName(cert *v1alpha1.Certificate) string {
 func MakeService(o *v1alpha1.Certificate, opts ...func(*corev1.Service)) *corev1.Service {
 	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:            svcName(o),
+			Name:            ServiceName(o),
 			Namespace:       o.Namespace,
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(o)},
 		},
@@ -71,7 +71,7 @@ func MakeService(o *v1alpha1.Certificate, opts ...func(*corev1.Service)) *corev1
 func MakeEndpoints(o *v1alpha1.Certificate, opts ...func(*corev1.Endpoints)) *corev1.Endpoints {
 	ep := &corev1.Endpoints{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:            svcName(o),
+			Name:            ServiceName(o),
 			Namespace:       o.Namespace,
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(o)},
 		},
