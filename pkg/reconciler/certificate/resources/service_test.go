@@ -119,6 +119,36 @@ func TestMakeService(t *testing.T) {
 			},
 		},
 		opts: []func(*corev1.Service){WithServicePort(1234)},
+	}, {
+		name: "name has dots",
+		o: &v1alpha1.Certificate{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "foo.com",
+				Namespace: "bar",
+				UID:       "42-42-1234",
+			},
+		},
+		want: &corev1.Service{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "challenge-for-42-42-1234",
+				Namespace: "bar",
+				OwnerReferences: []metav1.OwnerReference{{
+					APIVersion:         "networking.internal.knative.dev/v1alpha1",
+					Kind:               "Certificate",
+					Name:               "foo.com",
+					UID:                "42-42-1234",
+					Controller:         ptr.Bool(true),
+					BlockOwnerDeletion: ptr.Bool(true),
+				}},
+			},
+			Spec: corev1.ServiceSpec{
+				Ports: []corev1.ServicePort{{
+					Name:       portName,
+					Port:       80,
+					TargetPort: intstr.FromInt(8080),
+				}},
+			},
+		},
 	}}
 
 	for _, test := range tests {
@@ -231,6 +261,39 @@ func TestMakeEndpoints(t *testing.T) {
 			}},
 		},
 		opts: []func(*corev1.Endpoints){WithEndpointsPort(1234)},
+	}, {
+		name: "name has dots",
+		o: &v1alpha1.Certificate{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "bar.com",
+				Namespace: "food",
+				UID:       "dead-beef",
+			},
+		},
+		want: &corev1.Endpoints{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "challenge-for-dead-beef",
+				Namespace: "food",
+				OwnerReferences: []metav1.OwnerReference{{
+					APIVersion:         "networking.internal.knative.dev/v1alpha1",
+					Kind:               "Certificate",
+					Name:               "bar.com",
+					UID:                "dead-beef",
+					Controller:         ptr.Bool(true),
+					BlockOwnerDeletion: ptr.Bool(true),
+				}},
+			},
+			Subsets: []corev1.EndpointSubset{{
+				Addresses: []corev1.EndpointAddress{{
+					IP: os.Getenv("POD_IP"),
+				}},
+				Ports: []corev1.EndpointPort{{
+					Name:     portName,
+					Port:     8080,
+					Protocol: corev1.ProtocolTCP,
+				}},
+			}},
+		},
 	}}
 
 	for _, test := range tests {

@@ -25,9 +25,20 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/apimachinery/pkg/util/validation"
 )
 
 const portName = "http-challenge"
+
+func svcName(cert *v1alpha1.Certificate) string {
+	// Service names must be a DNS-1035 label. We try to use the
+	// Certificate name first if possible.
+	if name := kmeta.ChildName(cert.Name, ""); 0 == len(validation.IsDNS1035Label(name)) {
+		return name
+	}
+	// Fall back to a less readable name but guaranteed to be DNS-1035 label.
+	return "challenge-for-" + string(cert.GetUID())
+}
 
 // MakeService creates a Service, which we will point at ourselves.
 // This service does not have a selector because it is created alongside
@@ -36,7 +47,7 @@ const portName = "http-challenge"
 func MakeService(o *v1alpha1.Certificate, opts ...func(*corev1.Service)) *corev1.Service {
 	svc := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:            o.Name,
+			Name:            svcName(o),
 			Namespace:       o.Namespace,
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(o)},
 		},
@@ -60,7 +71,7 @@ func MakeService(o *v1alpha1.Certificate, opts ...func(*corev1.Service)) *corev1
 func MakeEndpoints(o *v1alpha1.Certificate, opts ...func(*corev1.Endpoints)) *corev1.Endpoints {
 	ep := &corev1.Endpoints{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:            o.Name,
+			Name:            svcName(o),
 			Namespace:       o.Namespace,
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(o)},
 		},
