@@ -85,6 +85,8 @@ kind: Service
 metadata:
   name: net-http01-controller
   namespace: knative-serving
+  labels:
+    networking.knative.dev/ingress-provider: http01
 spec:
   type: ClusterIP
   ports:
