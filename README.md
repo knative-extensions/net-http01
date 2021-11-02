@@ -1,5 +1,7 @@
 # Knative `net-http01`
 
+**[This component is GA](https://github.com/knative/community/tree/main/mechanics/MATURITY-LEVELS.md)**
+
 [![GoDoc](https://godoc.org/knative.dev/net-http01?status.svg)](https://godoc.org/knative.dev/net-http01)
 [![Go Report Card](https://goreportcard.com/badge/knative/net-http01)](https://goreportcard.com/report/knative/net-http01)
 
