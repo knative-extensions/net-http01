@@ -18,8 +18,8 @@ metadata:
   name: net-http01-controller
   namespace: knative-serving
   labels:
-    app.kubernetes.io/name: http01
-    app.kubernetes.io/part-of: knative-serving
+    app.kubernetes.io/component: net-http01
+    app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: devel
     serving.knative.dev/release: devel
     networking.knative.dev/ingress-provider: http01
