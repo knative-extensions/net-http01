@@ -24,6 +24,9 @@ import (
 
 	_ "knative.dev/pkg/hack"
 
+	// To get the certificate CRD
+	_ "knative.dev/networking/config"
+
 	_ "knative.dev/networking/test/conformance/certificate/http01"
 	_ "knative.dev/networking/test/test_images/grpc-ping"
 	_ "knative.dev/networking/test/test_images/httpproxy"
