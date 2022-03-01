@@ -5,14 +5,14 @@ go 1.14
 require (
 	github.com/google/go-cmp v0.5.6
 	github.com/imdario/mergo v0.3.9 // indirect
-	golang.org/x/crypto v0.0.0-20210920023735-84f357641f63
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	k8s.io/api v0.22.5
 	k8s.io/apimachinery v0.22.5
 	k8s.io/client-go v0.22.5
-	knative.dev/hack v0.0.0-20220216040439-0456e8bf6547
-	knative.dev/networking v0.0.0-20220217013411-48ac02ff5975
-	knative.dev/pkg v0.0.0-20220217155112-d48172451966
+	knative.dev/hack v0.0.0-20220224013837-e1785985d364
+	knative.dev/networking v0.0.0-20220228180610-27525df27a5b
+	knative.dev/pkg v0.0.0-20220228195509-fe264173447b
 )
 
 replace github.com/prometheus/client_golang => github.com/prometheus/client_golang v0.9.2
