@@ -21,7 +21,6 @@ metadata:
     app.kubernetes.io/component: net-http01
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: devel
-    serving.knative.dev/release: devel
     networking.knative.dev/ingress-provider: http01
 spec:
   replicas: 1
@@ -32,7 +31,9 @@ spec:
     metadata:
       labels:
         app: net-http01-controller
-        knative.dev/release: devel
+        app.kubernetes.io/component: net-http01
+        app.kubernetes.io/name: knative-serving
+        app.kubernetes.io/version: devel
     spec:
       serviceAccountName: controller
       containers:
@@ -90,6 +91,9 @@ metadata:
   namespace: knative-serving
   labels:
     networking.knative.dev/ingress-provider: http01
+    app.kubernetes.io/component: net-http01
+    app.kubernetes.io/name: knative-serving
+    app.kubernetes.io/version: devel
 spec:
   type: ClusterIP
   ports:
