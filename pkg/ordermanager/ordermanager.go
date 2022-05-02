@@ -26,6 +26,8 @@ import (
 	"crypto/x509/pkix"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -34,6 +36,7 @@ import (
 	"golang.org/x/crypto/acme/autocert"
 	"golang.org/x/sync/errgroup"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/apimachinery/pkg/util/wait"
 	"knative.dev/net-http01/pkg/challenger"
 	"knative.dev/pkg/apis"
 	logging "knative.dev/pkg/logging"
@@ -209,21 +212,38 @@ func (om *impl) initiateNewOrder(ctx context.Context, domains []string, owner in
 		if err != nil {
 			return ticket{}, err
 		}
-		resp, err := om.Client.HTTP01ChallengeResponse(chal.Token)
+		chalResp, err := om.Client.HTTP01ChallengeResponse(chal.Token)
 		if err != nil {
 			return ticket{}, err
 		}
 		path := om.Client.HTTP01ChallengePath(chal.Token)
-		om.Challenger.RegisterChallenge(path, resp)
+		om.Challenger.RegisterChallenge(path, chalResp)
 
 		eg.Go(func() error {
 			defer om.Challenger.UnregisterChallenge(path)
 
-			// TODO(mattmoor): Wait until we have successfully probed the
-			// challenge ourselves before "Accepting" to get positive hand-off
-			// to the routing layer that things have been successfully plumbed.
-			// something something wait.Until()
-			time.Sleep(2 * time.Second)
+			err = wait.Poll(2*time.Second, 120*time.Second, func() (bool, error) {
+				r, err := http.Get("http://" + z.Identifier.Value + path)
+
+				if err != nil {
+					logging.FromContext(ctx).Errorf("Error polling for challenge readiness: %v", err)
+					return false, nil
+				}
+				body, err := io.ReadAll(r.Body)
+				defer r.Body.Close()
+				if err != nil {
+					logging.FromContext(ctx).Errorf("Error reading body from challenger: %v", err)
+					return false, nil
+				}
+
+				return string(body) == chalResp, nil
+			})
+
+			if err == wait.ErrWaitTimeout {
+				logging.FromContext(ctx).Warn("Timout verifying challenge readiness")
+			} else if err != nil {
+				return err
+			}
 
 			if _, err := om.Client.Accept(ctx, chal); err != nil {
 				return err
