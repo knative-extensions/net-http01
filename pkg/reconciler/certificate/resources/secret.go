@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"time"
 
+	"knative.dev/networking/pkg/apis/networking"
 	"knative.dev/networking/pkg/apis/networking/v1alpha1"
 	"knative.dev/pkg/kmeta"
 
@@ -99,6 +100,7 @@ func MakeSecret(o *v1alpha1.Certificate, cert *tls.Certificate) (*corev1.Secret,
 			Name:            o.Spec.SecretName,
 			Namespace:       o.Namespace,
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(o)},
+			Labels:          map[string]string{networking.CertificateUIDLabelKey: string(o.GetUID())},
 		},
 		Type: corev1.SecretTypeTLS,
 		Data: map[string][]byte{
