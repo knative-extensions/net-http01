@@ -23,7 +23,7 @@ import (
 	"log"
 	"net/http"
 
-	network "knative.dev/networking/pkg"
+	"knative.dev/networking/pkg/http/probe"
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/injection/sharedmain"
@@ -48,7 +48,7 @@ func main() {
 
 	port := 8765
 
-	go http.ListenAndServe(fmt.Sprint(":", port), network.NewProbeHandler(chlr))
+	go http.ListenAndServe(fmt.Sprint(":", port), probe.NewHandler(chlr))
 
 	sharedmain.MainWithContext(ctx, "net-http01",
 		func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
