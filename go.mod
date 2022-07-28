@@ -6,13 +6,13 @@ require (
 	github.com/google/go-cmp v0.5.6
 	github.com/hashicorp/golang-lru v0.5.4
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 	k8s.io/api v0.23.8
 	k8s.io/apimachinery v0.23.8
 	k8s.io/client-go v0.23.8
-	knative.dev/hack v0.0.0-20220721014222-a6450400b5f1
-	knative.dev/networking v0.0.0-20220721014205-5ea1a8e86ebe
-	knative.dev/pkg v0.0.0-20220721014205-1a5e1682be3a
+	knative.dev/hack v0.0.0-20220728013938-9dabf7cf62e3
+	knative.dev/networking v0.0.0-20220728013737-d6a574eaefe1
+	knative.dev/pkg v0.0.0-20220728013737-449f7e6dab63
 )
 
 require (
