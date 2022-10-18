@@ -23,5 +23,6 @@ import (
 )
 
 func TestHTTP01Conformance(t *testing.T) {
+	t.Skip("Skipping http01 conformance test. See issues/424.")
 	http01.RunConformance(t)
 }
