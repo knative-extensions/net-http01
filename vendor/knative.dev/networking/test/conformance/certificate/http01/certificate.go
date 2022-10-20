@@ -32,8 +32,8 @@ func TestHTTP01Challenge(t *testing.T) {
 	ctx, clients := context.Background(), test.Setup(t)
 
 	certDomains := [][]string{
-		{subDomain + ".knative.test"},
-		{subDomain + "2.knative.test", subDomain + "3.knative.test"},
+		{subDomain + ".knative.dev"},
+		{subDomain + "2.knative.dev", subDomain + "3.knative.dev"},
 	}
 
 	for _, domains := range certDomains {
