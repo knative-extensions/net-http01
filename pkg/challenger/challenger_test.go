@@ -18,7 +18,7 @@ package challenger
 
 import (
 	context "context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -71,7 +71,7 @@ func TestBasicLifecycle(t *testing.T) {
 					t.Errorf("SeverHTTP(after register) = %d, wanted %d", got, want)
 				}
 
-				body, err := ioutil.ReadAll(rec.Result().Body)
+				body, err := io.ReadAll(rec.Result().Body)
 				if err != nil {
 					t.Errorf("ReadAll() = %v", err)
 				} else if got, want := string(body), payload; got != want {
