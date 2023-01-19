@@ -11,8 +11,8 @@ require (
 	k8s.io/apimachinery v0.25.4
 	k8s.io/client-go v0.25.4
 	knative.dev/hack v0.0.0-20230113013652-c7cfcb062de9
-	knative.dev/networking v0.0.0-20230116015156-3ad2fdcfe492
-	knative.dev/pkg v0.0.0-20230116014407-876c59d03903
+	knative.dev/networking v0.0.0-20230118220600-e9d3a55facee
+	knative.dev/pkg v0.0.0-20230117181655-247510c00e9d
 )
 
 require (
