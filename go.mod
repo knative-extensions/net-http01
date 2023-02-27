@@ -1,5 +1,7 @@
 module knative.dev/net-http01
 
+// Trigger a release
+// https://github.com/knative/serving/issues/13747
 go 1.18
 
 require (
