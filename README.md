@@ -1,4 +1,8 @@
-# Knative `net-http01`
+### :warning: Deprecation Notice :warning:
+
+This integration is deprecated and this repo will be archived the coming months. See: https://github.com/knative/serving/issues/14640 for the timeline.
+
+## Knative `net-http01`
 
 [![GoDoc](https://godoc.org/knative.dev/net-http01?status.svg)](https://godoc.org/knative.dev/net-http01)
 [![Go Report Card](https://goreportcard.com/badge/knative/net-http01)](https://goreportcard.com/report/knative/net-http01)
